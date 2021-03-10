@@ -7,16 +7,16 @@ const sessionStore = {};
 
 function parseCookies(req, res, next) {
 
-    const cookieHeader = req.get('Set-Cookie');
+    const cookieHeader = req.get("cookie");
     req.hwCookies = {};
+    const splittedHeaders = cookieHeader.split(';');
 
-    const splittedHeader = cookieHeader.split(';');
-
-    splittedHeader.map(headers => {
-        let nameValuePair = headers.split('=');
-        req.hwCookies[nameValuePair[0]] = nameValuePair[1];
-
-    })
+    if (splittedHeaders !== undefined) {
+        splittedHeaders.forEach(function(cookie){ 
+            const nameValuePair = cookie.split('=');
+            req.hwCookies[nameValuePair[0]] = nameValuePair[1];
+        });
+    }
 
     next();
 }
@@ -26,14 +26,19 @@ function parseCookies(req, res, next) {
 function manageSession(req, res, next) {
 
     req.hwSession = {};
-    req.hwSession.sessionId = sessionStore["sessionId"];
 
-    if (req.hwCookies)
-
-
-
-
-
+    if (req.hwCookies.sessionId !== undefined && sessionStore.hasOwnProperty(req.hwCookies.sessionId)){
+		req.hwSession.sessionId = sessionStore["sessionId"];
+        req.hwSession.sessionId = re.hwCookies.sessionId;
+		console.log("session already exists: ", req.hwSession.sessionId);
+	}
+	else{
+        sessionId = uuid.v4();
+        sessionStore[sessionId] = {};
+		res.append("Set-Cookie", "session_id=" + sessionId + "; HttpOnly");
+        req.hwSession.sessionId = sessionId;
+		console.log("session generated:", sessionId);
+	}
 
     next();
 }
