@@ -17,7 +17,6 @@ function parseCookies(req, res, next) {
     if (cookieHeader !== undefined) {
 
         //Splits the headers with ;
-
         let splittedHeaders = cookieHeader.split(';');
         splittedHeaders.forEach(function(cookie){ 
             const nameValuePair = cookie.split('=');
@@ -29,7 +28,6 @@ function parseCookies(req, res, next) {
 
 
 function manageSession(req, res, next) {
-
 
     //req should have a property called hwSession where data received from the
     //session store is placed

@@ -54,12 +54,14 @@ app.get('/movies/add', function(req, res){
     res.render('add');
 });
 
-//Creates new movie in the object
+//Creates a new movie 
 app.post('/movies/add', function(req, res) {
     new Movie({
         title: req.body.title,
         director: req.body.director,
         year: req.body.year
+
+    //Will be storing the added movies into an array called mymovies, which will be part of the session
     }).save(function(err, movies, count){
         
         //Case when mymovies array(array objects) is not defined or has not been created
