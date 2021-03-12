@@ -7,9 +7,17 @@ const sessionStore = {};
 
 function parseCookies(req, res, next) {
 
+    //Used req.get to retrieve the Cookie header from the request
     let cookieHeader = req.get('cookie')
+
+    //Created a property called hwCookies,which is initialized as an empty object
     req.hwCookies = {};
+    
+    //Add the names and values parsed from the Cookie as properties and values on req.hwCookies
     if (cookieHeader !== undefined) {
+
+        //Splits the headers with ;
+
         let splittedHeaders = cookieHeader.split(';');
         splittedHeaders.forEach(function(cookie){ 
             const nameValuePair = cookie.split('=');
@@ -26,13 +34,13 @@ function manageSession(req, res, next) {
     //req should have a property called hwSession where data received from the
     //session store is placed
     req.hwSession = {};
-    let sessionId = req.hwCookies.sessionId;
 
     //Check if sessionId is in req.hwCookies and check if that session id exists within 
     //session store
-    if (sessionId !== undefined && sessionStore.hasOwnProperty(sessionId)){
-		req.hwSession = sessionStore[sessionId];
-        req.hwSession.sessionId = sessionId;
+    if (req.hwCookies.sessionId !== undefined && sessionStore.hasOwnProperty(req.hwCookies.sessionId)){
+		
+        //Sets req.hwSession to the data that's in session store for that sessionId
+        req.hwSession = sessionStore[req.hwCookies.sessionId];
 		console.log("session already exists: ", req.hwSession.sessionId);
 	}
 	else{

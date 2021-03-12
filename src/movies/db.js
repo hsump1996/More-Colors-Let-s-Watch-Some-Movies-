@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 
 
 // my schema goes here!
-
 const Movie = new mongoose.Schema({
 	title: String,
 	director: String,
@@ -13,4 +12,4 @@ const Movie = new mongoose.Schema({
 mongoose.model('Movie', Movie);
 
 
-mongoose.connect('mongodb://localhost/hw05', {useNewUrlParser: true});
+mongoose.connect('mongodb://localhost/hw05',{useNewUrlParser: true, useUnifiedTopology: true});
